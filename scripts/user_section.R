@@ -1,7 +1,8 @@
 #==== OPTIONS =======================================
-u_processDB <- TRUE
-u_debug     <- FALSE
-u_verbose   <- TRUE
+u_processDB <- TRUE       # (Re)Process all databases
+u_nonPublic <- FALSE      # Add other non-public datasets
+u_debug     <- FALSE      # Enable or disable debugging mode
+u_verbose   <- TRUE       # Enable or disable verbose mode
 
 
 #==== FILES AND PATHS ===============================

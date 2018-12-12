@@ -28,17 +28,21 @@ v_dataALR <- rbind(
   process_rose(u_path_rosedata, u_path_ar5data, v_dataAR5, VERBOSE=u_verbose, DEBUG=u_debug))
 save(v_dataALR, file="temp/v_data_AMPERELIMITSROSE.RData")
 
-#---- Luderer 2013 data ------------------------
-v_dataL13 <- process_luderer2013(u_path_luderer13, VERBOSE=u_verbose, DEBUG=u_debug)
-save(v_dataL13, file="temp/v_data_Luderer13.RData")
-
-# #---- Rogelj 2015 data ------------------------
-# v_dataR15 <- process_rogelj2015(u_path_rogelj15, VERBOSE=u_verbose, DEBUG=u_debug)
-# save(v_dataR15, file="temp/v_dataRogelj15.RData")
-
 #---- IPCC SR15 2018 data ---------------------
 v_dataSR15 <- process_sr15data(u_path_sr15data, VERBOSE=u_verbose, DEBUG=u_debug)
 save(v_dataSR15, file="temp/v_dataSR15.RData")
+
+if (u_nonPublic) {
+  #---- Luderer 2013 data ------------------------
+  v_dataL13 <- process_luderer2013(u_path_luderer13, VERBOSE=u_verbose, DEBUG=u_debug)
+  save(v_dataL13, file="temp/v_data_Luderer13.RData")
+  
+  # #---- Rogelj 2015 data ------------------------
+  # v_dataR15 <- process_rogelj2015(u_path_rogelj15, VERBOSE=u_verbose, DEBUG=u_debug)
+  # save(v_dataR15, file="temp/v_dataRogelj15.RData")
+} else {
+  v_dataL13 <- data.frame()
+}
 
 
 #==== MERGE DATA ========================
@@ -130,7 +134,7 @@ load(u_path_rcpdata)
 
 
 # Global Carbon Project (1959-2015)
-data_gcp <- process_gcp("data/Global_Carbon_Budget_2016v1.0.xlsx")
+data_gcp <- process_gcp(u_path_gcpdata)
 
 historicalCO2Budget <- data_gcp  %>% 
   mutate(value = value/1000) %>% 

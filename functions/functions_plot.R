@@ -420,7 +420,6 @@ plot_ribbons_allcat_2C <- function(i_df, lower="q15", upper="q85", plotRCP=TRUE,
   return(p)
 }
 
-
 plot_cumulative_boxplots <- function(i_df, lower="q15", upper="q85", ylab="", xlim=NULL, ylim=NULL, yscale=NULL, ADD_STATS=NULL) {
   
   tmp <- i_df %>% 
