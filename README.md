@@ -4,6 +4,8 @@ This repository contains IPCC scenario data from the AR5 and SR15 and a set of R
 The data include Model Intercomparison Projects such as AMPERE, LIMITS, RoSE, SSP.
 
 ## Getting started
+Remark: The code requires some packages from the repository https://www.pik-potsdam.de/rd3mod/R/. Before installing them, you need to add this to your sources.
+
 The file main.R provides a template to analyse scenario data.
 First one must define a few user options in the file scripts/user_section.R.
 These include options to process the scenario databases, definitions of file paths and the definition of the function to select a subset of variables from the scenario databases. 
