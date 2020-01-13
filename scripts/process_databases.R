@@ -47,7 +47,8 @@ if (u_nonPublic) {
 
 #==== MERGE DATA ========================
 #-- Data categorised by temperature targets only -----------
-v_data_tempTargets <- rbind(
+if (u_nonPublic){
+combined_data <- rbind(
   v_dataAR5 %>% 
     filter(!grepl("AMPERE|LIMITS|ROSE", scenario)) %>%             # Removing AMPERE, LIMITS and ROSE scenarios
     select(model,scenario,region,variable,period,value,tempcat),
@@ -60,7 +61,22 @@ v_data_tempTargets <- rbind(
   # SR15 db
   v_dataSR15 %>% 
     filter(!grepl("EMC", scenario)) %>%                            # Removing EMC scenarios that come from Luderer et al 2013
-    select(model,scenario,region,variable,period,value,tempcat)) %>% 
+    select(model,scenario,region,variable,period,value,tempcat))
+} else {
+combined_data <- rbind(
+  v_dataAR5 %>% 
+    filter(!grepl("AMPERE|LIMITS|ROSE", scenario)) %>%             # Removing AMPERE, LIMITS and ROSE scenarios
+    select(model,scenario,region,variable,period,value,tempcat),
+  # AMPERE, LIMITS, RoSE
+  v_dataALR %>% 
+    select(model,scenario,region,variable,period,value,tempcat),
+  # SR15 db
+  v_dataSR15 %>% 
+    filter(!grepl("EMC", scenario)) %>%                            # Removing EMC scenarios that come from Luderer et al 2013
+    select(model,scenario,region,variable,period,value,tempcat))
+}
+
+v_data_tempTargets <- combined_data %>%
   mutate(model    = factor(model)) %>% 
   mutate(scenario = factor(scenario)) %>% 
   mutate(period   = as.numeric(period)) %>% 
@@ -75,23 +91,38 @@ v_data_tempTargets_regional <- v_data_tempTargets %>%
   filter(region != "World")
 
 #--Data categorised by temperature targets and scenario types (limBio, delayed, lowEI ...) ------
-v_data_timeTechTemp <- rbind(
-  v_dataAR5 %>% 
-    filter(!grepl("AMPERE|LIMITS|ROSE", scenario)) %>% 
-    select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
-  # AMPERE-LIMITS-RoSE
-  v_dataALR %>% 
-    select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
-  # Luderer et al 2013
-  v_dataL13 %>% 
-    filter(tempcat != "") %>% 
-    filter(filter == "feasible") %>% 
-    select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
-  # SR15 db
-  v_dataSR15 %>% 
-    filter(!grepl("EMC", scenario)) %>% 
-    select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat)
-  )  %>% 
+if (u_nonPublic){
+  combined_data <- rbind(
+    v_dataAR5 %>% 
+      filter(!grepl("AMPERE|LIMITS|ROSE", scenario)) %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
+    # AMPERE-LIMITS-RoSE
+    v_dataALR %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
+    # Luderer et al 2013
+    v_dataL13 %>% 
+      filter(tempcat != "") %>% 
+      filter(filter == "feasible") %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
+    # SR15 db
+    v_dataSR15 %>% 
+      filter(!grepl("EMC", scenario)) %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat))
+} else {
+  combined_data <- rbind(
+    v_dataAR5 %>% 
+      filter(!grepl("AMPERE|LIMITS|ROSE", scenario)) %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
+    # AMPERE-LIMITS-RoSE
+    v_dataALR %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat),
+    # SR15 db
+    v_dataSR15 %>% 
+      filter(!grepl("EMC", scenario)) %>% 
+      select(model,scenario,region,variable,period,value,tempcat,timingcat,techcat))
+}
+
+v_data_timeTechTemp <- combined_data %>%
   mutate(model    = factor(model)) %>% 
   mutate(scenario = factor(scenario)) %>% 
   mutate(period   = as.numeric(period)) %>% 

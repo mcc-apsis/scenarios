@@ -4,6 +4,10 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
+#-- Load PIK libraries ------------------
+library(ar5data)
+library(quitte)
+
 #-- Load funtions ------------------------
 source("functions/useful_functions.R")
 source("functions/functions_processDB.R")
